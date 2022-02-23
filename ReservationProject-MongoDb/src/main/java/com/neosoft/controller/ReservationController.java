@@ -38,27 +38,27 @@ public class ReservationController {
 	   @GetMapping("/reservations")
 	    public Iterable<Reservation> getAllReservations() {
 	        return reservationService.reservationList();
-	    }
+	    }//getAllReservations
 	
 	@GetMapping("/reservationList")
 	public String reservationList(Model model) {
 		log.info("GET:/reservationList-->called");
 		model.addAttribute("reservations",reservationService.reservationList());
 		return "reservations";
-	}
+	}//reservationList
 	
 	@GetMapping("/reservation/{id}")
 	public String reservationList(Model model,@PathVariable("id")Long id) {
 		model.addAttribute(reservationService.getReservById(id));
 		return "reservations";
-	}
+	}//reservationList
 	
 	 @GetMapping(value = {"/add-form"})
 	    public String addReservation( Model model,@ModelAttribute("reservation")Reservation reservation) {
 	        log.info("Get:/add-form---->Called");
 	        model.addAttribute("reservation", reservation);
 	        return "add-edit";
-	    }
+	    }//addReservation
 	 
 	 @PostMapping("/save-reservation")
 	    public String editReservation(@ModelAttribute("reservation") @Valid Reservation reservation) {
@@ -73,7 +73,7 @@ public class ReservationController {
 		 log.info("POST:/save-reservation/{"+reservation.getId()+"}-->called");
 	        reservationService.addReservation(reservation);
 	        return "redirect:reservationList";
-	    }
+	    }//editReservation1
 	 
 	 @GetMapping(value = {"/edit-form/{id}", "/edit-form"})
 	    public String editReservation(@PathVariable("id") Optional<Long> id, Model model) {
@@ -82,7 +82,7 @@ public class ReservationController {
 	                reservationService.findById(id.get()).get() : new Reservation();
 	        model.addAttribute("reservation", reservation);
 	        return "edit";
-	    }
+	    }//editReservation
 
 	@PutMapping("/edit-add-reservation/{id}")
 	public String updateReservation(@Valid @ModelAttribute("reservation") Reservation reservation,@PathVariable("id")Long id) throws ResourceNotFoundException {
@@ -92,7 +92,7 @@ public class ReservationController {
 		reservation.setId(id);
 		reservationService.addReservation(reservation);
 		return "redirct:add-edit";
-	}
+	}//updateReservation
 	
 	@GetMapping("/delete-reservation/{id}")
 	public String deleteReservation(@PathVariable("id")Long id,Model model) throws ResourceNotFoundException {
@@ -102,18 +102,11 @@ public class ReservationController {
 		reservationService.deleteReservation(id);
 		model.addAttribute("reservations",reservationService.reservationList());
 		return "reservations";
-		
-	}
+	}//deleteReservation
 	
 	@GetMapping("/search")
 	public String findByFirstName( String firstName,Model model) {
 		model.addAttribute("reservations",reservationService.findByFirstName(firstName));
 	     return "reservations";
-	}
-	
-	
-	
-	
-	
-
-}
+	}//findByFirstName
+}//controller
